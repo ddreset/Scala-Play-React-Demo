@@ -1,0 +1,19 @@
+Form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sub-title{
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.inline {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
