@@ -87,30 +87,37 @@ class ClubNew extends Component {
         }
         callAPI("/api/club", "POST", postData).then(data => {
             console.log(data)
+            alert("submitted!")
         })
     }
 
     render() {
         return (
             <div>
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Club Name <input type="text" name="name" value={this.state.clubName} onChange={this.changeClubName}/>
-                </label>
-                <div className="sub-title">Members</div>
-                { this.state.members.map((value,index) => {
-                    if (value != null) {
-                        return <div key={index} className="inline">
-                            <input index={index} type="text" name="member" value={value} onChange={event => this.changeMemberName(event)}/>
-                            <button type="button" name="remove" onClick={() => this.removeMember(index)}>remove</button>
-                        </div>;
-                    } else{
-                        return null;
-                    }
-                })}
-                <button type="button" onClick={() => this.addMember()}>add a member</button>    
-                <input type="submit" value="Submit" />
-            </form>
+                <form onSubmit={this.handleSubmit}>
+                    <div className="sub-title">New Club</div>
+                    <label>
+                        Club Name <input type="text" name="name" value={this.state.clubName} onChange={this.changeClubName}/>
+                    </label>
+                    <div className="sub-title">New Members</div>
+                    { this.state.members.map((value,index) => {
+                        if (value != null) {
+                            return <div key={index} className="inline">
+                                <label>
+                                    Member Name 
+                                    <input index={index} type="text" name="member" value={value} onChange={event => this.changeMemberName(event)}/>
+                                </label>
+                                <button type="button" name="remove" onClick={() => this.removeMember(index)}>remove</button>
+                            </div>;
+                        } else{
+                            return null;
+                        }
+                    })}
+                    <div className="inline">
+                        <button type="button" onClick={() => this.addMember()}>add a member</button>    
+                        <input type="submit" value="Submit" />
+                    </div>
+                </form>
             
             </div>
         );

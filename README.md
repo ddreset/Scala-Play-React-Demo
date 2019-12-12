@@ -1,6 +1,6 @@
 [![MIT License][license-badge]][LICENSE]
 
->This a demo for using Scala, Play! and React. It is developed based on [Scala Play React Seed project](https://github.com/yohangz/scala-play-react-seed)
+>This is a demo for using Scala, Play! and React. It is developed based on [Scala Play React Seed project](https://github.com/yohangz/scala-play-react-seed)
 
 # Backend API
 
