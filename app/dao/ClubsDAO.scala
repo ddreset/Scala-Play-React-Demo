@@ -42,18 +42,22 @@ class ClubsDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
   val clubs = TableQuery[Clubs]
   val members = TableQuery[Members]
 
-  /** Construct the Map[String,String] needed to fill a select options set */
-  // def list(): Future[Seq[Club]] = {
-  //   val query = (for {
-  //     club <- clubs
-  //   } yield (club.id, club.name, club.abbr)).sortBy( /*name*/ _._2)
-
-  //   db.run(query.result).map(rows => rows.map { case (id, name, abbr) => (id.toString, name, abbr) })
-  // }
-
+  /** list clubs*/  
   def list(): Future[Seq[Club]] = db.run{
     clubs.result
   }
+
+  /** list clubs with their members*/  
+  def leftJoin (): Future[Seq[(Club,Seq[Option[Member]])]] = {
+    db.run(clubs.joinLeft(members).on(_.id === _.clubId).result).map(_
+      .groupBy(_._1)
+      .mapValues(_.map(_._2))
+      .toSeq
+      .sortBy(_._1.id))
+  }
+
+  /** count clubs*/  
+  def count(): Future[Int] = db.run(clubs.length.result)
 
   /** Insert a new club */
   def insert(club: Club): Future[Long] = db.run{
@@ -63,19 +67,5 @@ class ClubsDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
   /** Insert a list of new clubs */
   def insert(clubs: Seq[Club]): Future[Option[Int]] = db.run(this.clubs ++= clubs)
 
-  /** count clubs*/  
-  def count(): Future[Int] = db.run(clubs.length.result)
-
-  // query for leftJoin
-  // def leftJoin (): Future[Seq[(Club,Option[Member])]] = db.run {
-  //   clubs.joinLeft(members).on(_.id === _.clubId).result
-  // }
-
-  def leftJoin (): Future[Seq[(Club,Seq[Option[Member]])]] = {
-    db.run(clubs.joinLeft(members).on(_.id === _.clubId).result).map(_
-      .groupBy(_._1)
-      .mapValues(_.map(_._2))
-      .toSeq
-      .sortBy(_._1.id))
-  }
+  
 }

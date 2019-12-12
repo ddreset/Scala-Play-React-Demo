@@ -24,6 +24,7 @@ class MembersDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvid
 
   val members = TableQuery[Members]
 
+  /** Insert members */
   def list(): Future[Seq[Member]] = db.run{
     members.result
   }
