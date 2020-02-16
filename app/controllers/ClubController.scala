@@ -13,7 +13,11 @@ import scala.concurrent.duration._
 import dao.{ClubsDAO, MembersDAO}
 import models.{Club, Member}
 
+import play.api.Logger
+
 class ClubController @Inject()(clubsDao: ClubsDAO, membersDao: MembersDAO, cc: ControllerComponents)(implicit executionContext: ExecutionContext) extends AbstractController(cc) {
+
+  private val logger = Logger(getClass)
 
   /**
    * The mapping for the club form.
@@ -45,6 +49,11 @@ class ClubController @Inject()(clubsDao: ClubsDAO, membersDao: MembersDAO, cc: C
         Future(BadRequest(Json.obj("status" -> "KO", "message" -> JsError.toJson(errors))))
       },
       club => {
+        // flatMap for nested Future
+        // clubsDao.insert(club).flatMap(clubId => {
+        //   // use clubId to insert members
+        // })
+
         // save club and return clubId
         val insertClub: Future[(Long)] = 
           for { result <- clubsDao.insert(club)} yield (result)

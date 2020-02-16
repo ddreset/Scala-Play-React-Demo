@@ -59,9 +59,8 @@ class ClubsDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
   /** count clubs*/  
   def count(): Future[Int] = db.run(clubs.length.result)
 
-  /** Insert a new club */
-  def insert(club: Club): Future[Long] = db.run{
-    (clubs returning clubs.map(_.id)) += club
+  def insert(club: Club): Future[Long] = {
+    db.run(clubs += club).map(res => res)
   }
 
   /** Insert a list of new clubs */
